@@ -1,2 +1,2 @@
 # activity_padding
-Learning stuff. Also, I want to look like a 100x super coderman.
+Learning stuff to make me look like a 100x super coderman.
