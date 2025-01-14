@@ -307,5 +307,17 @@ multiApp f gs x = f $ [ g x | g <- gs ]
 -- function, the surprise won't work. See section 3.8 in the material.
 
 interpreter :: [String] -> [String]
-interpreter commands = todo
+interpreter commands = interpret commands [0, 0] [] 
 
+interpret :: [String] -> [Int] -> [String] -> [String]
+interpret [] _ xh = xh
+interpret (c:xc) (x:y:_) xh
+  | c == "printX" = interpret xc [x,y] (xh ++ [(show x)])
+  | c == "printY" = interpret xc [x,y] (xh ++ [(show y)])
+  | otherwise     = interpret xc (translate c [x,y]) xh
+
+translate :: String -> [Int] -> [Int]
+translate "up"    (x:y:_) = [x, y+1]
+translate "down"  (x:y:_) = [x, y-1]
+translate "right" (x:y:_) = [x+1, y]
+translate "left"  (x:y:_) = [x-1, y]
