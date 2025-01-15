@@ -39,7 +39,11 @@ import Mooc.Todo
 --   buildList 7 0 3 ==> [3]
 
 buildList :: Int -> Int -> Int -> [Int]
-buildList start count end = todo
+buildList start count end = buildList' start count end [end]
+
+buildList' :: Int -> Int -> Int -> [Int] -> [Int]
+buildList' srt 0   end lst = lst
+buildList' srt cnt end lst = buildList' srt (cnt-1) end (srt : lst)
 
 ------------------------------------------------------------------------------
 -- Ex 2: given i, build the list of sums [1, 1+2, 1+2+3, .., 1+2+..+i]
