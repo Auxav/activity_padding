@@ -53,7 +53,15 @@ buildList' srt cnt end lst = buildList' srt (cnt-1) end (srt : lst)
 -- Ps. you'll probably need a recursive helper function
 
 sums :: Int -> [Int]
-sums i = todo
+sums i = sums' i []
+
+sums' :: Int -> [Int] -> [Int]
+sums' 1 xi = 1 : xi
+sums' p xi = sums' (p-1) ((sum' [1..p] 0) : xi)
+
+sum' :: [Int] -> Int -> Int
+sum' []     acc = acc
+sum' (x:xi) acc = sum' xi (x + acc)
 
 ------------------------------------------------------------------------------
 -- Ex 3: define a function mylast that returns the last value of the
