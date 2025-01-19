@@ -28,6 +28,10 @@ module Set3b where
 import Mooc.LimitedPrelude
 import Mooc.Todo
 
+reverse' :: [a] -> [a] -> [a]
+reverse' []     ys = ys
+reverse' (x:xs) ys = reverse' xs (x:ys)
+
 ------------------------------------------------------------------------------
 -- Ex 1: given numbers start, count and end, build a list that starts
 -- with count copies of start and ends with end.
@@ -75,7 +79,8 @@ sum' (x:xi) acc = sum' xi (x + acc)
 --   mylast 0 [1,2,3] ==> 3
 
 mylast :: a -> [a] -> a
-mylast def xs = todo
+mylast def []     = def
+mylast def (x:xs) = mylast x xs
 
 ------------------------------------------------------------------------------
 -- Ex 4: safe list indexing. Define a function indexDefault so that
@@ -93,7 +98,10 @@ mylast def xs = todo
 --   indexDefault ["a","b","c"] (-1) "d" ==> "d"
 
 indexDefault :: [a] -> Int -> a -> a
-indexDefault xs i def = todo
+indexDefault []     0 def = def
+indexDefault []     _ def = def
+indexDefault (x:xs) 0 _   = x
+indexDefault (x:xs) i def = indexDefault xs (i-1) def
 
 ------------------------------------------------------------------------------
 -- Ex 5: define a function that checks if the given list is in
@@ -109,7 +117,9 @@ indexDefault xs i def = todo
 --   sorted [7,2,7] ==> False
 
 sorted :: [Int] -> Bool
-sorted xs = todo
+sorted []       = True
+sorted (x:[])   = True
+sorted (x:y:xs) = if x > y then False else sorted (y:xs)
 
 ------------------------------------------------------------------------------
 -- Ex 6: compute the partial sums of the given list like this:
@@ -121,7 +131,12 @@ sorted xs = todo
 -- Use pattern matching and recursion (and the list constructors : and [])
 
 sumsOf :: [Int] -> [Int]
-sumsOf xs = todo
+sumsOf xs = sumsOf' xs []
+
+sumsOf' :: [Int] -> [Int] -> [Int]
+sumsOf' []     ys     = reverse' ys []
+sumsOf' (x:xs) []     = sumsOf' xs (x:[])
+sumsOf' (x:xs) (y:ys) = sumsOf' xs ((x+y):y:ys)
 
 ------------------------------------------------------------------------------
 -- Ex 7: implement the function merge that merges two sorted lists of
@@ -134,7 +149,11 @@ sumsOf xs = todo
 --   merge [1,1,6] [1,2]   ==> [1,1,1,2,6]
 
 merge :: [Int] -> [Int] -> [Int]
-merge xs ys = todo
+merge [] ys = ys
+merge xs [] = xs
+merge (x:xs) (y:ys)
+  | x <= y    = (x : merge xs (y:ys))
+  | otherwise = (y : (merge (x:xs) ys))
 
 ------------------------------------------------------------------------------
 -- Ex 8: compute the biggest element, using a comparison function
