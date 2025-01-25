@@ -52,7 +52,11 @@ allEqual (x:y:xs) = if x == y then allEqual $ y:xs else False
 --   distinct [1,2] ==> True
 
 distinct :: Eq a => [a] -> Bool
-distinct = todo
+distinct []     = True
+distinct (x:[]) = True
+distinct (x:xs) = if isIn x xs then False else distinct xs
+  where isIn _ []     = False
+        isIn x (y:ys) = if x == y then True else isIn x ys
 
 ------------------------------------------------------------------------------
 -- Ex 3: implement the function middle that returns the middle value
@@ -65,7 +69,9 @@ distinct = todo
 --   middle 'b' 'a' 'c'  ==> 'b'
 --   middle 1 7 3        ==> 3
 
-middle = todo
+middle :: Ord a => a -> a -> a -> a
+middle a b c = takesnd $ sort [a,b,c]
+  where takesnd (_:b:_) = b
 
 ------------------------------------------------------------------------------
 -- Ex 4: return the range of an input list, that is, the difference
