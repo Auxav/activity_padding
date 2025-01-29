@@ -86,8 +86,9 @@ middle a b c = takesnd $ sort [a,b,c]
 --   rangeOf [4,2,1,3]          ==> 3
 --   rangeOf [1.5,1.0,1.1,1.2]  ==> 0.5
 
-rangeOf :: [a] -> a
-rangeOf = todo
+rangeOf :: (Ord a, Num a) => [a] -> a
+rangeOf [] = 0
+rangeOf xs = (foldr max (-100) xs) - (foldr min 100 xs)
 
 ------------------------------------------------------------------------------
 -- Ex 5: given a (non-empty) list of (non-empty) lists, return the longest
@@ -105,7 +106,11 @@ rangeOf = todo
 --   longest [[1,2,3],[4,5],[6]] ==> [1,2,3]
 --   longest ["bcd","def","ab"] ==> "bcd"
 
-longest = todo
+longest xs = foldr choose [] xs
+  where choose x y = if length x == length y then choose_equal x y else choose_longest x y
+
+choose_longest x y = if length x > length y then x else y
+choose_equal (x:xs) (y:ys) = if x < y then (x:xs) else (y:ys)
 
 ------------------------------------------------------------------------------
 -- Ex 6: Implement the function incrementKey, that takes a list of
