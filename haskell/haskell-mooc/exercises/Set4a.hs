@@ -214,7 +214,14 @@ freqList (c:cs) ys = freqList (foldr remove' [] cs) ((c, (foldr count' 0 (c:cs))
 --     ==> fromList [("Bob",100),("Mike",50)]
 
 transfer :: String -> String -> Int -> Map.Map String Int -> Map.Map String Int
-transfer from to amount bank = todo
+transfer from to amount bank
+  | amount < 0              = bank
+  | Map.notMember from bank = bank
+  | Map.notMember to bank   = bank
+  | enoughBalance           = bank
+  | otherwise               = changeBalances bank
+    where enoughBalance  = (((Map.!) bank from) - amount) < 0
+          changeBalances = Map.insertWith (+) to amount . Map.insertWith(+) from (-amount)
 
 ------------------------------------------------------------------------------
 -- Ex 11: given an Array and two indices, swap the elements in the indices.
@@ -224,7 +231,7 @@ transfer from to amount bank = todo
 --         ==> array (1,4) [(1,"one"),(2,"three"),(3,"two"),(4,"four")]
 
 swap :: Ix i => i -> i -> Array i a -> Array i a
-swap i j arr = todo
+swap i j arr = arr // [(i, arr ! j), (j, arr ! i)]
 
 ------------------------------------------------------------------------------
 -- Ex 12: given an Array, find the index of the largest element. You
@@ -235,4 +242,4 @@ swap i j arr = todo
 -- Hint: check out Data.Array.indices or Data.Array.assocs
 
 maxIndex :: (Ix i, Ord a) => Array i a -> i
-maxIndex = todo
+maxIndex arr = todo
