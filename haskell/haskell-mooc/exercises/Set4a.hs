@@ -179,7 +179,14 @@ winner s p1 p2 = pickWinner (Map.findWithDefault 0 p1 s) (Map.findWithDefault 0 
 --     ==> Map.fromList [(False,3),(True,1)]
 
 freqs :: (Eq a, Ord a) => [a] -> Map.Map a Int
-freqs xs = todo
+freqs xs = Map.fromList (freqList xs [])
+
+freqList []     ys = ys
+freqList (c:cs) ys = freqList (foldr remove' [] cs) ((c, (foldr count' 0 (c:cs))):ys)
+  where count'  = (\x acc -> if c == x then acc+1 else acc)
+        remove' = (\x acc -> if c == x then acc else (x:acc))
+-- count' c [] = 0
+-- count' c (x:xs) = if x == c then 1 + count' c xs else count' c xs
 
 ------------------------------------------------------------------------------
 -- Ex 10: recall the withdraw example from the course material. Write a
