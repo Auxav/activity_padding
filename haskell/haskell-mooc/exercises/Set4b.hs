@@ -55,8 +55,10 @@ maxHelper m x = if m < x then x else m
 sumAndLength :: [Double] -> (Double,Int)
 sumAndLength xs = foldr slHelper slStart xs
 
-slStart = todo
-slHelper = todo
+slStart = (0.0, 0)
+
+slHelper :: Double -> (Double, Int) -> (Double, Int)
+slHelper x (s, l) = (s+x, l+1)
 
 ------------------------------------------------------------------------------
 -- Ex 4: implement concat with a fold. Define concatHelper and
